@@ -4,23 +4,28 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun HomeScreen(    onExploreClick: () -> Unit
-
+fun HomeScreen(
+    onExploreClick: () -> Unit
 ) {
 
+    var searchText by remember {
+        mutableStateOf("")
+    }
+
     val destinations = listOf(
-        "Goa",
-        "Manali",
-        "Jaipur",
-        "Kerala",
-        "Mumbai"
+        "🏖 Goa",
+        "🏔 Manali",
+        "🏰 Jaipur",
+        "🌴 Kerala",
+        "🌆 Mumbai"
+
     )
 
     LazyColumn(
@@ -30,13 +35,20 @@ fun HomeScreen(    onExploreClick: () -> Unit
     ) {
 
         item {
-
             Text(
-                text = "Hello Traveler 👋",
-                fontSize = 28.sp,
+                text = "WanderPilot",
+                fontSize = 30.sp,
                 fontWeight = FontWeight.Bold
             )
 
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = "Explore the World 🌍",
+                fontSize = 16.sp
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
@@ -46,8 +58,8 @@ fun HomeScreen(    onExploreClick: () -> Unit
             Spacer(modifier = Modifier.height(20.dp))
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = searchText,
+                onValueChange = { searchText = it },
                 label = { Text("Search Destination") },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -64,13 +76,7 @@ fun HomeScreen(    onExploreClick: () -> Unit
         }
 
         items(destinations) { destination ->
-            Spacer(modifier = Modifier.height(8.dp))
 
-            Button(
-                onClick =  onExploreClick
-            ) {
-                Text("Explore")
-            }
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -78,8 +84,7 @@ fun HomeScreen(    onExploreClick: () -> Unit
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 4.dp
                 )
-            )
-            {
+            ) {
 
                 Column(
                     modifier = Modifier.padding(16.dp)
@@ -94,8 +99,21 @@ fun HomeScreen(    onExploreClick: () -> Unit
                     Spacer(modifier = Modifier.height(6.dp))
 
                     Text(
-                        text = "Explore amazing attractions and plan your trip."
+                        text = when(destination) {
+                            "🏖 Goa" -> "Beautiful beaches and vibrant nightlife."
+                            "🏔 Manali" -> "Snow-covered mountains and adventure sports."
+                            "🏰 Jaipur" -> "Royal heritage, forts and palaces."
+                            "🌴 Kerala" -> "Backwaters, greenery and relaxation."
+                            else -> "City life, beaches and entertainment."
+                        }
                     )
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Button(
+                        onClick = onExploreClick
+                    ) {
+                        Text("Explore")
+                    }
                 }
             }
         }
